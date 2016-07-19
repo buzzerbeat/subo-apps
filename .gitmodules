@@ -1,3 +1,9 @@
 [submodule "wallpaper"]
 	path = wallpaper
 	url = https://github.com/buzzerbeat/wallpaper
+[submodule "microvideo"]
+	path = microvideo
+	url = https://github.com/buzzerbeat/microvideo
+[submodule "backend"]
+	path = backend
+	url = https://github.com/buzzerbeat/backend
