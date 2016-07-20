@@ -11,7 +11,7 @@ use Yii;
  * @property integer $id
  * @property string $content
  * @property integer $status
- * @property string $from_app
+ * @property string $client_id
  * @property integer $user_id
  * @property integer $parent
  * @property integer $resource_id
@@ -38,10 +38,10 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content', 'from_app', 'user_id',  'resource_id',  'create_time'], 'required'],
+            [['content', 'client_id', 'user_id',  'resource_id',  'create_time'], 'required'],
             [['user_id', 'parent', 'resource_id', 'create_time', 'status'], 'integer'],
             [['content', 'user_agent'], 'string', 'max' => 1024],
-            [['from_app', 'user_ip'], 'string', 'max' => 255],
+            [['client_id', 'user_ip'], 'string', 'max' => 255],
         ];
     }
 
@@ -54,7 +54,7 @@ class Comment extends \yii\db\ActiveRecord
             'id' => 'Id',
             'content' => 'Content',
             'status' => 'Status',
-            'from_app' => 'From App',
+            'client_id' => 'Client Id',
             'user_id' => 'User ID',
             'parent' => 'Parent',
             'resource_id' => 'Resource ID',
@@ -94,7 +94,7 @@ class Comment extends \yii\db\ActiveRecord
     {
         $fields = [
             'sid',
-            'from_app',
+            'client_id',
             'userName',
             'userAvatar',
             'content',

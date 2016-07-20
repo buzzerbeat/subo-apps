@@ -9,7 +9,10 @@
 namespace frontend\controllers;
 
 
+use common\components\LevelFilter;
 use frontend\models\BindForm;
+use frontend\models\DeviceLoginForm;
+use frontend\models\DeviceRegisterForm;
 use frontend\models\LoginForm;
 use frontend\models\MobileValidForm;
 use frontend\models\NameValidForm;
@@ -45,8 +48,9 @@ class UserController extends Controller
             ],
         ];
         $behaviors['access'] = [
-            'class' => AccessControl::className(),
+            'class' => LevelFilter::className(),
             'only' => ['info', 'edit', 'bind'],
+            'levels' => ['info', 'edit'],
             'rules' => [
                 [
                     'actions' => ['info', 'edit', 'bind'],
@@ -61,12 +65,20 @@ class UserController extends Controller
     public function actionInfo() {
 
         $user = Yii::$app->user->identity;
-        $user->client = Yii::$app->request->get('client', null);
+//        $user->client = Yii::$app->request->get('client', null);
         return $user;
     }
 
     public function actionRegister() {
         $model = new RegisterForm();
+        if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
+            return ["status"=>0, "message"=>"", "user"=>$model->user];
+        }
+        return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];
+    }
+
+    public function actionDeviceRegister() {
+        $model = new DeviceRegisterForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
             return ["status"=>0, "message"=>"", "user"=>$model->user];
         }
@@ -84,6 +96,14 @@ class UserController extends Controller
 
     public function actionLogin() {
         $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
+            return ["status"=>0, "message"=>"", "user"=>$model->user];
+        }
+        return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];
+    }
+
+    public function actionDeviceLogin() {
+        $model = new DeviceLoginForm();
         if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
             return ["status"=>0, "message"=>"", "user"=>$model->user];
         }

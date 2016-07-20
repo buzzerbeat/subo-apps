@@ -5,6 +5,7 @@ use common\models\Image;
 use common\models\ImageForm;
 use wallpaper\models\AlbumImgRel;
 use wallpaper\models\Album;
+use wallpaper\models\Category;
 use wallpaper\models\WpImage;
 use Yii;
 use yii\base\Exception;
@@ -217,7 +218,28 @@ class SpiderController extends BaseController
     }
 
 
+    public function actionImportCategory() {
+        $albums = Album::find()->all();
+        foreach($albums as $album) {
+            $cat = Category::findOne(['name'=>$album->section]);
+            if (empty($cat)) {
+                $cat = new Category();
+                $cat->name = $album->section;
+                $cat->keyword = '';
+                $cat->rank = 0;
+                if (!$cat->save()) {
+                    var_dump($cat->getErrors());
+                    exit;
+                }
+            }
 
+            $album->category = $cat->id;
+            if(!$album->save()) {
+                var_dump($album->getErrors());
+                exit;
+            }
+        }
+    }
     public function actionInitWpAlbum() {
         $allImages = AlbumImgRel::find()->all();
         foreach($allImages as $one) {

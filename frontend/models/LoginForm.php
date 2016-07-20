@@ -11,7 +11,7 @@ use yii\helpers\VarDumper;
 /**
  * LoginForm is the model behind the login form.
  */
-class LoginForm extends Model
+class  LoginForm extends Model
 {
     public $mobile;
     public $password;
@@ -76,7 +76,6 @@ class LoginForm extends Model
                 if ($newUser->hasTokenExpired($this->client)) {
                     $newUser->generateToken($this->client, null, true);
                 }
-                $newUser->client = $this->client;
                 $this->user = $newUser;
                 return true;
             } else {
@@ -101,7 +100,6 @@ class LoginForm extends Model
                 if ($newUser->hasTokenExpired($this->client)) {
                     $newUser->generateToken($this->client, null, true);
                 }
-                $newUser->client = $this->client;
                 $this->user = $newUser;
 
                 return true;
@@ -126,8 +124,6 @@ class LoginForm extends Model
         }
         return $this->_user;
     }
-
-
 
 
 }

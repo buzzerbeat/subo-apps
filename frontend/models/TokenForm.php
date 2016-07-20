@@ -51,7 +51,6 @@ class TokenForm extends Model
         $user = User::findIdentityByRefreshToken($this->refresh_token, $this->client);
         if ($this->validate() && !empty($user)) {
             $user->generateToken($this->client, $this->refresh_token);
-            $user->client = $this->client;
             $this->user = $user;
             return true;
         } else {

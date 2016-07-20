@@ -12,7 +12,7 @@ use yii\web\UploadedFile;
 /**
  * LoginForm is the model behind the login form.
  */
-class RegisterForm extends Model
+class RegisterForm extends BaseForm
 {
     public $mobile;
     public $password;
@@ -20,7 +20,6 @@ class RegisterForm extends Model
     public $avatar;
     public $avatarFile;
     public $user;
-    public $from_app;
 
     public $client;
     public $client_secret;
@@ -41,7 +40,7 @@ class RegisterForm extends Model
             [['username'], 'trim'],
             ['username', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\x{4e00}-\x{9fa5}]{2,12}$/u'],
             ['password', 'string', 'min' => 6, 'max' => 20],
-            [['username', 'avatar', 'client', 'client_secret', 'token', 'from_app'],  'string'],
+            [['username', 'avatar', 'client', 'client_secret', 'token'],  'string'],
             ['client', 'validateClient'],
             [['avatarFile'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, gif'],
             ['username', 'validateNickname'],
@@ -99,7 +98,7 @@ class RegisterForm extends Model
                     'created_at'=>time(),
                     'updated_at'=>time() - 86400 * 90,
                     'type'=>User::MOBILE_TYPE,
-                    'from_app'=>$this->from_app,
+                    'client_id'=> $this->client,
                 ], false);
 
                 if (!empty($avatarModel)) {
@@ -119,7 +118,6 @@ class RegisterForm extends Model
                     $this->addErrors($newUser->getErrors());
                     return false;
                 }
-                $newUser->client = $this->client;
                 $this->user = $newUser;
 
                 return true;

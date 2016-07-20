@@ -107,7 +107,7 @@ class ThirdRegisterForm extends BaseForm
                     'created_at'=>time(),
                     'updated_at'=>time() - 86400 * 90,
                     'type'=>User::THIRD_TYPE,
-                    'from_app'=>$this->getFromApp(),
+                    'client_id'=>$this->client,
                 ], false);
 
                 if (!empty($avatarModel)) {
@@ -133,7 +133,6 @@ class ThirdRegisterForm extends BaseForm
                     $this->addErrors($newUser->getErrors());
                     return false;
                 }
-                $newUser->client = $this->client;
                 $this->user = $newUser;
 
                 return true;

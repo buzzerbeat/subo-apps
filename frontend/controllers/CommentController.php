@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use common\components\LevelFilter;
 use common\components\Utility;
 use common\models\Comment;
 use frontend\models\CommentForm;
@@ -33,6 +34,19 @@ class CommentController extends Controller
             'class' => ContentNegotiator::className(),
             'formats' => [
                 'application/json' => Response::FORMAT_JSON,
+            ],
+        ];
+
+        $behaviors['access'] = [
+            'class' => LevelFilter::className(),
+            'only' => ['send'],
+            'levels' => ['send'],
+            'rules' => [
+                [
+                    'actions' => ['send'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
             ],
         ];
 

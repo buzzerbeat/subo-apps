@@ -34,10 +34,11 @@ class CommentLikeForm extends BaseForm
 
     public function like()
     {
-        $this->userId = \Yii::$app->user->identity->id;
+        $user = \Yii::$app->user->identity;
+        $this->userId = $user->id;
         $comment = Comment::find()->where([
             'resource_id' => $this->getId(),
-            'from_app' => $this->getFromApp(),
+            'client_id' => $this->getClientId($user),
             'user' => $this->userId,
         ])->one();
         if ($comment) {

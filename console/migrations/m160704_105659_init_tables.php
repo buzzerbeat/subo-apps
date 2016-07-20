@@ -80,7 +80,7 @@ class m160704_105659_init_tables extends Migration
             'id' => $this->primaryKey(),
             'content' => $this->string(2048)->notNull(),
             'status' => $this->smallInteger()->notNull(),
-            'from_app' => $this->string()->notNull(),
+            'client_id' => $this->string()->notNull(),
             'resource_id' => $this->integer()->notNull(),
             'user_id' => $this->integer()->notNull(),
             'user_ip' => $this->string()->notNull(),
@@ -140,7 +140,7 @@ class m160704_105659_init_tables extends Migration
         $this->addColumn('user', 'weibo', $this->string()->notNull());
         $this->addColumn('user', 'mobile', $this->string()->notNull());
         $this->addColumn('user', 'personal_sign', $this->text()->notNull());
-        $this->addColumn('user', 'from_app', $this->string()->notNull());
+        $this->addColumn('user', 'client_id', $this->string()->notNull());
     }
 
     public function down()
@@ -166,7 +166,7 @@ class m160704_105659_init_tables extends Migration
         $this->dropColumn('user', 'weibo');
         $this->dropColumn('user', 'mobile');
         $this->dropColumn('user', 'personal_sign');
-        $this->dropColumn('user', 'from_app');
+        $this->dropColumn('user', 'client_id');
     }
 
     /*

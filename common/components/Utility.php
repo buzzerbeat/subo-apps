@@ -381,6 +381,18 @@ class Utility extends \yii\base\Component
         return $result;
     }
 
+    public static function getRandNumber($length){
+        $str = '1234567890';
+        $result = '';
+        $l = strlen($str);
+        for($i = 0;$i < $length;$i ++){
+            $num = rand(0, $l-1);
+            $result .= $str[$num];
+        }
+        return $result;
+    }
+
+
     public static function fileExt($mimeType)
     {
         $map = array(

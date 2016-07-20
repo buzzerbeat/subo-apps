@@ -31,7 +31,7 @@ use yii\web\IdentityInterface;
  * @property string $weixin
  * @property string $created_at
  * @property string $updated_at
- * @property string $from_app
+ * @property string $client_id
  * @property string $personal_sign
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -44,7 +44,8 @@ class User extends ActiveRecord implements IdentityInterface
     const MOBILE_TYPE = 2;
     const THIRD_TYPE = 3;
 
-    public $client = null;
+//    public $client = null;
+    public $token = null;
     /**
      * @inheritdoc
      */
@@ -61,38 +62,54 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             [['username', 'auth_key'], 'required'],
             [['created_at', 'updated_at', 'sex', 'personal_sign'], 'safe'],
-            [['username', 'email', 'password_hash', 'password_reset_token', 'device_uuid'], 'string', 'max' => 255],
+            [['username', 'email', 'password_hash', 'password_reset_token', 'device_uuid', 'client_id'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['status'], 'integer'],
+            [['status', 'type'], 'integer'],
         ];
     }
 
 
     public function getAccessToken() {
-        $where = [
-            'user_id'=>$this->id,
-            'client_id'=>$this->client,
-        ];
-        $token = OauthAccessTokens::findOne($where);
-        return empty($token) ? '' : $token->access_token;
+        if (!empty($this->token)) {
+            return $this->token;
+        } else {
+            $where = [
+                'user_id'=>$this->id,
+                'client_id'=>$this->client_id,
+            ];
+            $token = OauthAccessTokens::findOne($where);
+            return empty($token) ? '' : $token->access_token;
+        }
+
     }
 
     public function getRefreshToken() {
         $where = [
             'user_id'=>$this->id,
-            'client_id'=>$this->client,
+            'client_id'=>$this->client_id,
         ];
         $token = OauthRefreshTokens::findOne($where);
         return empty($token) ? '' : $token->refresh_token;
     }
 
+//    public function setClient() {
+//        if ()
+//    }
+
     public function fields()
     {
 
         $fields = [
-            'accessToken','refreshToken',
-            'avatarSid', 'personal_sign', 'mobile',
-            'bindQq', 'bindWeibo', 'bindWeixin', 'nameEditable'
+            'accessToken',
+            'refreshToken',
+            'username',
+            'avatarImg',
+            'personal_sign',
+            'mobile',
+            'bindQq',
+            'bindWeibo',
+            'bindWeixin',
+            'nameEditable'
         ];
         return $fields;
     }
@@ -142,7 +159,7 @@ class User extends ActiveRecord implements IdentityInterface
             'weixin' => 'WeiXin',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
-            'from_app' => 'From App',
+            'client_id' => 'Client Id',
             'personal_sign' => '个人签名',
         ];
     }
@@ -164,7 +181,9 @@ class User extends ActiveRecord implements IdentityInterface
             'access_token' => $token,
         ]);
         if (!empty($accessToken) && strtotime($accessToken->expires) > time()) {
-            return static::findOne($accessToken->user_id);
+            $user = static::findOne($accessToken->user_id);
+            $user->token = $token;
+            return $user;
         } else {
             return false;
         }

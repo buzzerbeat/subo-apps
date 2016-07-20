@@ -56,6 +56,7 @@ class CommentForm extends BaseForm
 
 
     public function send() {
+
         $user = \Yii::$app->user->identity;
         if ($this->validate()) {
             $headers = Yii::$app->request->headers;
@@ -66,7 +67,7 @@ class CommentForm extends BaseForm
                 'status'=>Comment::STATUS_ACTIVE,
                 'user_id'=>$user->id,
                 'create_time'=>time(),
-                'from_app'=>$this->getFromApp(),
+                'client_id'=>$this->getClientId($user),
                 'user_agent'=>$headers->get('User-Agent', ''),
                 'user_ip'=>Yii::$app->request->getUserIP(),
             ]);
