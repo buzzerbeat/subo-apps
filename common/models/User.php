@@ -40,10 +40,22 @@ class User extends ActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
 
+    const STATUS_MAP = [
+        self::STATUS_DELETED=>'不可用',
+        self::STATUS_ACTIVE=>'可用',
+    ];
+
     const DEVICE_TYPE = 1;
     const MOBILE_TYPE = 2;
     const THIRD_TYPE = 3;
 
+
+    const TYPE_MAP = [
+        0=>'未知',
+        self::DEVICE_TYPE=>'设备',
+        self::MOBILE_TYPE=>'手机号',
+        self::THIRD_TYPE=>'第三方',
+    ];
 //    public $client = null;
     public $token = null;
     /**
