@@ -5,6 +5,35 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'db' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=subo_apps',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
+        'qsykDb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=qsyk_160629',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
+
+        'mvDb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=microvideo',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
+        'wpDb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=wallpaper',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
         'cache' => [
             'class' => 'yii\caching\MemCache',
             'servers' => [
