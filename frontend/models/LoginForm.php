@@ -69,9 +69,8 @@ class  LoginForm extends Model
 
     public function login()
     {
-        Yii::trace(VarDumper::dumpAsString(Yii::$app->request));
         if ($this->validate()) {
-            $newUser = User::findByMobile($this->mobile);
+            $newUser = User::findByMobile($this->mobile, $this->client);
             if (!empty($newUser) && $newUser->validatePassword($this->password)) {
                 if ($newUser->hasTokenExpired($this->client)) {
                     $newUser->generateToken($this->client, null, true);
@@ -120,7 +119,7 @@ class  LoginForm extends Model
     public function getUser()
     {
         if ($this->_user === false) {
-            $this->_user = User::findByUsername($this->username);
+            $this->_user = User::findByUsername($this->username, $this->client);
         }
         return $this->_user;
     }

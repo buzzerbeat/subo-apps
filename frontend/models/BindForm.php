@@ -46,6 +46,7 @@ class BindForm extends Model
         $user = \Yii::$app->user->identity;
         $exist = User::find()->where([
             'mobile'=>$this->mobile,
+            'client_id'=>$user->client_id,
         ])->andWhere(['!=', 'id', $user->id])->exists();
         if ($exist) {
             $this->addError($attribute, "手机号已绑定");

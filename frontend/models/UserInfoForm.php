@@ -47,6 +47,7 @@ class UserInfoForm extends Model
         $user = \Yii::$app->user->identity;
         $exist = User::find()->where([
             'username'=>$this->username,
+            'client_id'=>$user->client_id,
         ])->andWhere(['!=', 'id', $user->id])->exists();
         if ($exist) {
             $this->addError($attribute, "昵称已存在");
@@ -64,10 +65,7 @@ class UserInfoForm extends Model
     public function edit() {
         $user = \Yii::$app->user->identity;
         if ($this->validate()) {
-
             $this->avatarFile = UploadedFile::getInstanceByName('avatarFile');
-//            var_dump($this->avatarFile);
-//            exit;
             $avatarForm = new ImageForm();
             if (!empty($this->avatarFile)) {
                 $avatarModel = $avatarForm->upload($this->avatarFile);
@@ -75,8 +73,6 @@ class UserInfoForm extends Model
                 $avatarForm->url = $this->avatar;
                 $avatarModel = $avatarForm->save();
             }
-
-
 
             $attributes = [];
             foreach($this->getAttributes() as $attr=>$val) {

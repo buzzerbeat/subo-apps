@@ -268,30 +268,45 @@ class User extends ActiveRecord implements IdentityInterface
      * @return static|null
      */
 
-    public static function findByDeviceUuid($uuid)
+    public static function findByDeviceUuid($uuid, $client)
     {
-        return static::findOne(['device_uuid' => $uuid, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne([
+            'device_uuid' => $uuid,
+            'status' => self::STATUS_ACTIVE,
+            'client_id' => $client
+        ]);
     }
 
     /**
      * Finds user by user_name
      *
      * @param string $username
-     * @return static|null
+     * @param $client
+     * @return null|static
      */
-    public static function findByUsername($username)
+    public static function findByUsername($username, $client)
     {
-        return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne([
+            'username' => $username,
+            'status' => self::STATUS_ACTIVE,
+            'client_id' => $client
+        ]);
     }
 
-    public static function findByMobile($mobile)
+    public static function findByMobile($mobile, $client)
     {
-        return static::findOne(['mobile' => $mobile, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne([
+            'mobile' => $mobile,
+            'status' => self::STATUS_ACTIVE,
+            'client_id' => $client
+        ]);
     }
 
-    public static function findByThirdAccount($oid, $from)
+    public static function findByThirdAccount($oid, $from, $client)
     {
-        $where = [];
+        $where = [
+            'client_id' => $client
+        ];
         switch($from) {
             case "qq":
                 $where['qq'] = $oid;

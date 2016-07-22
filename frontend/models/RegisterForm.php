@@ -71,6 +71,7 @@ class RegisterForm extends BaseForm
     public function validateNickname($attribute, $params) {
         $exist = User::find()->where([
             'username'=>$this->$attribute,
+            'client_id'=>$this->client,
         ])->exists();
         if ($exist) {
             $this->addError($attribute, '用户名已存在');
@@ -80,7 +81,10 @@ class RegisterForm extends BaseForm
     public function register()
     {
         if ($this->validate()) {
-            $newUser = User::find()->where(['mobile'=>$this->mobile])->one();
+            $newUser = User::find()->where([
+                'mobile'=>$this->mobile,
+                'client_id'=>$this->client,
+            ])->one();
             if (empty($newUser)) {
                 $this->avatarFile = UploadedFile::getInstanceByName('avatarFile');
                 $avatarForm = new ImageForm();

@@ -102,13 +102,13 @@ class UserController extends Controller
         return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];
     }
 
-    public function actionDeviceLogin() {
-        $model = new DeviceLoginForm();
-        if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
-            return ["status"=>0, "message"=>"", "user"=>$model->user];
-        }
-        return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];
-    }
+//    public function actionDeviceLogin() {
+//        $model = new DeviceLoginForm();
+//        if ($model->load(Yii::$app->request->post(), '') && $model->login()) {
+//            return ["status"=>0, "message"=>"", "user"=>$model->user];
+//        }
+//        return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];
+//    }
 
     public function actionThirdLogin() {
         $model = new LoginForm();

@@ -65,22 +65,28 @@ class DeviceRegisterForm extends Model
     public function register()
     {
         if ($this->validate()) {
-            $user = new User();
-            $user->setAttributes([
-                'device_uuid' => $this->device_uuid,
-                'username' => "duser_" . Utility::getRandNumber(8),
-                'created_at' => time(),
-                'updated_at' => time(),
-                'type' => User::DEVICE_TYPE,
-                'status' => User::STATUS_ACTIVE,
+            $user = User::findOne([
+                'device_uuid'=>$this->device_uuid,
                 'client_id'=>$this->client,
             ]);
-            $user->genRandomPassword();
-            $user->generateAuthKey();
-            $user->generatePasswordResetToken();
-            if (!$user->save() || !$user->generateToken($this->client)) {
-                $this->addErrors($user->getErrors());
-                return false;
+            if (empty($user)) {
+                $user = new User();
+                $user->setAttributes([
+                    'device_uuid' => $this->device_uuid,
+                    'username' => "duser_" . Utility::getRandNumber(8),
+                    'created_at' => time(),
+                    'updated_at' => time(),
+                    'type' => User::DEVICE_TYPE,
+                    'status' => User::STATUS_ACTIVE,
+                    'client_id'=>$this->client,
+                ]);
+                $user->genRandomPassword();
+                $user->generateAuthKey();
+                $user->generatePasswordResetToken();
+                if (!$user->save() || !$user->generateToken($this->client)) {
+                    $this->addErrors($user->getErrors());
+                    return false;
+                }
             }
             $this->user = $user;
             return true;

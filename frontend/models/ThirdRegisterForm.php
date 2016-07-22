@@ -70,6 +70,7 @@ class ThirdRegisterForm extends BaseForm
     private function validateNickname($nickname) {
         $exist = User::find()->where([
             'username'=>$nickname,
+            'client_id'=>$this->client,
         ])->exists();
         return $exist;
     }
