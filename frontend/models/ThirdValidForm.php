@@ -26,8 +26,8 @@ class ThirdValidForm extends Model
     {
         return [
             // username and password are both required
-            [['oid', 'from', 'client'], 'required'],
-            [['oid', 'client'],  'string'],
+            [['oid', 'from', 'client', 'client_secret'], 'required'],
+            [['oid', 'client', 'client_secret'],  'string'],
             ['from', function ($attribute, $params) {
                 if (!in_array($this->$attribute, ['qq', 'weixin', 'weibo'])) {
                     $this->addError($attribute, 'Field \'from\' must be qq, weixin or weibo.');

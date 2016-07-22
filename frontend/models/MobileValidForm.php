@@ -25,8 +25,8 @@ class MobileValidForm extends Model
     {
         return [
             // username and password are both required
-            [['client', 'mobile'], 'required'],
-            [['mobile', 'client'],  'string'],
+            [['client', 'mobile', 'client_secret'], 'required'],
+            [['mobile', 'client', 'client_secret'],  'string'],
             ['mobile', 'match', 'pattern' => '/^[\d]{11}$/i'],
             ['mobile', 'validateDuplicated'],
             ['client', 'validateClient'],

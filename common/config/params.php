@@ -16,4 +16,6 @@ return [
     'ccpSoftVersion' => '2013-12-26',
     'ccpAccountSid' => 'aaf98f894f4900a3014f4e9e02a00470',
     'ccpSMSTemplate' => 92990,
+
+    'encodeKey' => 'suboAppKey',
 ];

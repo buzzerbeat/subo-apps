@@ -29,21 +29,21 @@ class DeviceRegisterForm extends Model
         return [
             [['device_uuid', 'client', 'client_secret'], 'required'],
             [['device_uuid', 'client', 'client_secret'],  'string'],
-            ['device_uuid', 'validateUuid'],
+//            ['device_uuid', 'validateUuid'],
             ['client', 'validateClient'],
         ];
     }
 
-    public function validateUuid($attribute, $params)
-    {
-       if (User::find()->where([
-            'device_uuid'=>$this->device_uuid,
-            'client_id'=>$this->client,
-        ])->exists()) {
-            $this->addError($attribute, '设备已经注册');
-            return false;
-        }
-    }
+//    public function validateUuid($attribute, $params)
+//    {
+//       if (User::find()->where([
+//            'device_uuid'=>$this->device_uuid,
+//            'client_id'=>$this->client,
+//        ])->exists()) {
+//            $this->addError($attribute, '设备已经注册');
+//            return false;
+//        }
+//    }
 
     public function validateClient($attribute, $params)
     {

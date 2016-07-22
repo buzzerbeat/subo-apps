@@ -25,9 +25,9 @@ class NameValidForm extends Model
     {
         return [
             // username and password are both required
-            [['client','username'], 'required'],
+            [['client', 'username', 'client_secret'], 'required'],
             [['username'], 'trim'],
-            [['username', 'client'],  'string'],
+            [['username', 'client', 'client_secret'],  'string'],
             ['username', 'match', 'pattern' => '/^[a-zA-Z0-9_\-\x{4e00}-\x{9fa5}]{2,12}$/u'],
             ['username', 'validateDuplicate'],
             ['client', 'validateClient'],
