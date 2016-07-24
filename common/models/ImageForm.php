@@ -56,25 +56,60 @@ class ImageForm extends Model
         }
     }
 
+	private function copyToTmp($url)
+    {
+		$tmp = '/tmp/' . Utility::getRandString(32);
+		$ch = curl_init($url);
+		if ($ch) {
+			$fp = fopen($tmp, 'wb');
+			if ($fp) {
+				curl_setopt($ch, CURLOPT_FILE, $fp);
+				curl_setopt($ch, CURLOPT_HEADER, 0);
+				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+				$ret = curl_exec($ch);
+				curl_close($ch);
+				fclose($fp);
+				if (!file_exists($tmp)) {
+					return false;
+				}
+				return $tmp;
+			}
+			return false;
+        }
+        return false;
+    }
+
+    private function mv($tmp, $imgPath)
+    {
+        if (!file_exists(dirname($imgPath))) {
+            @mkdir(dirname($imgPath), 0777, true);
+        }
+        return rename($tmp, $imgPath);
+    }
+
+
+	/*
+	 * todo 获取图片执行了三次
+     */
     public function save()
     {
-        $imageInfo = getimagesize($this->url);
+		$tmpfile = $this->copyToTmp($this->url);
+		if (empty($tmpfile)) {
+			return false;
+		}
+        $imageInfo = getimagesize($tmpfile);
         if ($imageInfo['mime'] == null) {
             return false;
         }
         $path = date('Ym') . '/' . date('d') . '/';
         $file = Utility::getRandString(32) . Utility::fileExt($imageInfo['mime']);
 
-        if (!file_exists(\Yii::$app->params['imgDir'] . $path . $file)) {
-            @mkdir(dirname(\Yii::$app->params['imgDir'] . $path . $file), 0777, true);
-        }
-
-        if (!$this->copy($this->url, \Yii::$app->params['imgDir'] . $path . $file)) {
+        if (!$this->mv($tmpfile, \Yii::$app->params['imgDir'] . $path . $file)) {
             $this->addError('', '文件拷贝错误');
             return false;
         }
-        $imgContent = file_get_contents($this->url);
-        $fileSize = strlen($imgContent);    // Consider HTTP Code 302
+        $imgContent = file_get_contents(\Yii::$app->params['imgDir'] . $path . $file);
+        $fileSize = strlen($imgContent);
 
         $dynamic = 0;
         if ('image/gif' == $imageInfo['mime']) {
