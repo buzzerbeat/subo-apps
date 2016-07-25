@@ -33,7 +33,7 @@ class CommentController extends Controller
         $behaviors['contentNegotiator'] = [
             'class' => ContentNegotiator::className(),
             'formats' => [
-                'application/json' => 'encode',
+                'application/json' => Response::FORMAT_JSON,
             ],
         ];
 
@@ -56,9 +56,14 @@ class CommentController extends Controller
     public function actionIndex()
     {
 //        Yii::$app->response->format = 'encode';
-
+        $request = Yii::$app->request;
+        $item = $request->get('item', '');
         return new ActiveDataProvider([
             'query' => Comment::find()
+            ->where([
+                'item_type'=>$item,
+                'status'=>1,
+            ])
         ]);
     }
 
