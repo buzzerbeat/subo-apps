@@ -40,6 +40,8 @@ class SpiderController extends BaseController
                 . "&idvs=&ida=D3DD2A38-5E20-458C-A3DE-AC693C5CFBE6&phonetype=iphone&model=iphone7%2C2&osn=iPhone%20OS&osv=9.3.2&tz=8";
             $curl = new curl\Curl();
             $url = "http://page.appdao.com/page?name=sw_collection_page" . $suffix;
+			echo $url;
+			throw new exception(111);
             $response = $curl->get($url);
             $catList = Json::decode($response, true);
             $catCount = 0;

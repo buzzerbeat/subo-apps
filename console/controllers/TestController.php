@@ -20,7 +20,6 @@ class TestController extends Controller
         $resp = $curl->get('http://qy1.appcq.cn:8085/comments');
 
 
-//        $encoder =  mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5(Yii::$app->params['suboAppKey']), "Hello", MCRYPT_MODE_ECB);
         $decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5(Yii::$app->params['encodeKey']), $resp, MCRYPT_MODE_ECB);
         echo $decrypted;
 
