@@ -15,6 +15,7 @@ use yii\base\Model;
 class ImageForm extends Model
 {
     public $url;
+    public $imageFiles;
 
     /**
      * @inheritdoc
@@ -26,6 +27,7 @@ class ImageForm extends Model
             [['url'], 'required'],
             // rememberMe must be a boolean value
             ['url', 'string'],
+            //[['imageFiles'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg', 'maxFiles' => 5],
         ];
     }
 
@@ -187,6 +189,23 @@ class ImageForm extends Model
         }
         return $img;
 
+    }
+    
+    public function uploadMultiple($imgFiles){
+        if(empty($imgFiles)){
+            $this->addErrors(['上传图片为空']);
+            return false;
+        }
+        $imgs = [];
+        foreach($imgFiles as $imgFile){
+            $img = $this->upload($imgFile);
+            if(empty($img)){
+                return false;
+            }
+            $imgs[] = $img;
+        }
+        
+        return $imgs;
     }
 
 }
