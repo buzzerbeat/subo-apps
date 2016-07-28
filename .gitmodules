@@ -10,3 +10,9 @@
 [submodule "console"]
 	path = console 
 	url = https://github.com/buzzerbeat/console
+[submodule "qsyk"]
+	path = qsyk
+	url = ./qsyk
+[submodule "beauty"]
+	path = beauty
+	url = ./beauty
