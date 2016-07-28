@@ -71,7 +71,7 @@ class UserController extends Controller
 
     public function actionRegister() {
         $model = new RegisterForm();
-        if ($model->load(Yii::$app->request->post(), '') && $model->register()) {
+        if ($model->load(Yii::$app->request->get(), '') && $model->register()) {
             return ["status"=>0, "message"=>"", "user"=>$model->user];
         }
         return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];

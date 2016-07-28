@@ -17,6 +17,7 @@ class CommentForm extends BaseForm
 {
     public $content;
     public $sid;
+    public $item;
     public $reply;
     public $retPost;
 
@@ -24,8 +25,8 @@ class CommentForm extends BaseForm
     {
         return [
             // username and password are both required
-            [['content', 'sid'], 'required'],
-            [['sid'],  'string'],
+            [['content', 'sid', 'item'], 'required'],
+            [['sid', 'item'],  'string'],
             ['content',  'string', 'min' => 3, 'max' => 2000],
             ['content', 'validateSimilar'],
         ];
@@ -34,6 +35,9 @@ class CommentForm extends BaseForm
     public function validateSimilar($attribute, $params)
     {
         $latestPosts = Comment::find()
+            ->where(
+                ['item_type'=>$this->item]
+            )
             ->orderBy(['create_time'=>SORT_DESC])
             ->limit(10)
             ->all();
@@ -62,7 +66,8 @@ class CommentForm extends BaseForm
             $headers = Yii::$app->request->headers;
             $post = new Comment();
             $post->setAttributes([
-                'resource_id'=>$this->getResourceId(),
+                'item_id'=>$this->getResourceId(),
+                'item_type'=>$this->item,
                 'content'=>$this->content,
                 'status'=>Comment::STATUS_ACTIVE,
                 'user_id'=>$user->id,

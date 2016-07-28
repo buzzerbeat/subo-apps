@@ -14,10 +14,11 @@ use Yii;
  * @property string $client_id
  * @property integer $user_id
  * @property integer $parent
- * @property integer $resource_id
+ * @property integer $item_id
  * @property string $user_ip
  * @property integer $create_time
  * @property string $user_agent
+ * @property string $item_type
  */
 class Comment extends \yii\db\ActiveRecord
 {
@@ -38,10 +39,11 @@ class Comment extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['content', 'client_id', 'user_id',  'resource_id',  'create_time'], 'required'],
-            [['user_id', 'parent', 'resource_id', 'create_time', 'status'], 'integer'],
+
+            [['content', 'client_id', 'user_id',  'item_id', 'item_type'], 'required'],
+            [['status', 'user_id', 'parent', 'item_id', 'create_time'], 'integer'],
             [['content', 'user_agent'], 'string', 'max' => 1024],
-            [['client_id', 'user_ip'], 'string', 'max' => 255],
+            [['client_id', 'user_ip', 'item_type'], 'string', 'max' => 255],
         ];
     }
 
@@ -57,10 +59,11 @@ class Comment extends \yii\db\ActiveRecord
             'client_id' => 'Client Id',
             'user_id' => 'User ID',
             'parent' => 'Parent',
-            'resource_id' => 'Resource ID',
+            'item_id' => 'Item ID',
             'user_ip' => 'User Ip',
             'create_time' => 'Create Time',
             'user_agent' => 'User Agent',
+            'item_type' => 'Item Type',
         ];
     }
 
@@ -86,8 +89,8 @@ class Comment extends \yii\db\ActiveRecord
         return Utility::sid($this->parent);
     }
 
-    public function getResourceSid() {
-        return Utility::sid($this->parent);
+    public function getItemSid() {
+        return Utility::sid($this->item_id);
     }
 
     public function fields()
@@ -100,7 +103,8 @@ class Comment extends \yii\db\ActiveRecord
             'content',
             'parentSid',
             'elapsedTime',
-            'resourceSid',
+            'item_type',
+            'itemSid',
         ];
         return $fields;
     }

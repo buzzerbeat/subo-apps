@@ -7,3 +7,15 @@
 [submodule "backend"]
 	path = backend
 	url = https://github.com/buzzerbeat/backend
+[submodule "console"]
+	path = console
+	url = https://github.com/buzzerbeat/console
+[submodule "qsyk"]
+	path = qsyk
+	url = https://github.com/buzzerbeat/qsyk_advanced
+[submodule "beauty"]
+	path = beauty
+	url = https://github.com/buzzerbeat/beauty_advanced.git
+[submodule "beauty_advanced"]
+	path = beauty_advanced
+	url = https://github.com/buzzerbeat/beauty_advanced.git
