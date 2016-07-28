@@ -8,8 +8,8 @@
 	path = backend
 	url = https://github.com/buzzerbeat/backend
 [submodule "console"]
-	path = console 
-	url = https://github.com/buzzerbeat/console
+	path = console
+	url = ./console
 [submodule "qsyk"]
 	path = qsyk
 	url = ./qsyk
