@@ -9,10 +9,10 @@
 	url = https://github.com/buzzerbeat/backend
 [submodule "console"]
 	path = console
-	url = ./console
+	url = https://github.com/buzzerbeat/console
 [submodule "qsyk"]
 	path = qsyk
-	url = ./qsyk
+	url = https://github.com/buzzerbeat/qsyk_advanced
 [submodule "beauty"]
 	path = beauty
 	url = https://github.com/buzzerbeat/beauty_advanced.git
