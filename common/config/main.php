@@ -34,6 +34,13 @@ return [
             'password' => 'my,YZWX;87',
             'charset' => 'utf8',
         ],
+        'bDb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=beauty',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
         'cache' => [
             'class' => 'yii\caching\MemCache',
             'servers' => [
