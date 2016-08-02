@@ -8,3 +8,4 @@ Yii::setAlias('@media', dirname(dirname(__DIR__)) . '/media');
 Yii::setAlias('@backend', dirname(dirname(__DIR__)) . '/backend');
 Yii::setAlias('@console', dirname(dirname(__DIR__)) . '/console');
 Yii::setAlias('@beauty', dirname(dirname(__DIR__)) . '/beauty');
+Yii::setAlias('@qsyk', dirname(dirname(__DIR__)) . '/qsyk');
