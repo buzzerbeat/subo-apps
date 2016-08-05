@@ -85,6 +85,8 @@ class ImageForm extends Model
     {
         if (!file_exists(dirname($imgPath))) {
             @mkdir(dirname($imgPath), 0777, true);
+            @chmod(dirname($imgPath), 0777);
+            @chmod(dirname(dirname($imgPath)), 0777);
         }
         return rename($tmp, $imgPath);
     }

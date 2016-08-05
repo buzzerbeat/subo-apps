@@ -81,6 +81,7 @@ class RegisterForm extends BaseForm
     public function register()
     {
         if ($this->validate()) {
+//            echo "111";
             $newUser = User::find()->where([
                 'mobile'=>$this->mobile,
                 'client_id'=>$this->client,
@@ -130,6 +131,7 @@ class RegisterForm extends BaseForm
                 return false;
             }
         }
+
         return false;
     }
 
