@@ -115,11 +115,14 @@ class Video extends \yii\db\ActiveRecord
     public function getRegexSetting() {
         $regexSetting = SiteRegexSetting::findOne(['id'=>$this->regex_setting]);
         if (!empty($regexSetting)) {
-            $regexSetting->app_req_url = str_replace('%s', $this->keyId, $regexSetting->app_req_url);
+            if(!empty($regexSetting->app_req_url)){
+                $regexSetting->app_req_url = str_replace('%s', $this->keyId, $regexSetting->app_req_url);
+            }
+            else{
+                $regexSetting->app_req_url = $this->site_url;
+            }
         }
-		if (empty($regexSetting->app_req_url)) {
-			$regexSetting->app_req_url = $this->site_url;
-		}
+
         return $regexSetting;
     }
 
