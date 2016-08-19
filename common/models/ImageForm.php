@@ -154,7 +154,7 @@ class ImageForm extends Model
         $path .= strtolower(substr($file, 0, 1)) . '/';
         $path .= strtolower(substr($file, 1, 1)) . '/';
         
-        if (!$this->mv($tmpfile, \Yii::$app->params['imgDir'] . $path . $file)) {
+        if (!$this->mv($tmpFile, \Yii::$app->params['imgDir'] . $path . $file)) {
             $this->addError('', '文件拷贝错误');
             return false;
         }
