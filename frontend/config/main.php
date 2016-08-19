@@ -17,6 +17,9 @@ return [
                 'encode' => 'common\components\EncodeFormatter',
             ],
         ],
+        'request' => [
+            'enableCookieValidation' => false,
+        ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,

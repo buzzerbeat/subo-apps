@@ -162,7 +162,7 @@ class Image extends ActiveRecord
                 $width,
                 $height,
                 $mode ? ManipulatorInterface::THUMBNAIL_OUTBOUND : ManipulatorInterface::THUMBNAIL_INSET)
-                ->save($thumbPath[0] . $thumbPath[1], ['quality' => 80])) {
+                ->save($thumbPath[0] . $thumbPath[1], ['quality' => 60])) {
                 return $thumbPath[0] . $thumbPath[1];
             } else {
                 return false;

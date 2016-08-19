@@ -18,4 +18,5 @@ return [
     'ccpSMSTemplate' => 92990,
 
     'encodeKey' => 'suboAppKey',
+    'locationData' => '/home/work/www/data/qqwry.dat',
 ];

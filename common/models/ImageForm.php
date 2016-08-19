@@ -113,6 +113,8 @@ class ImageForm extends Model
             @mkdir(dirname($imgPath), 0777, true);
             @chmod(dirname($imgPath), 0777);
             @chmod(dirname(dirname($imgPath)), 0777);
+            @chmod(dirname(dirname(dirname($imgPath))), 0777);
+            @chmod(dirname(dirname(dirname(dirname($imgPath)))), 0777);
         }
         return rename($tmp, $imgPath);
     }
@@ -149,8 +151,10 @@ class ImageForm extends Model
         }
         $path = date('Ym') . '/' . date('d') . '/';
         $file = Utility::getRandString(32) . Utility::fileExt($imageInfo['mime']);
-
-        if (!$this->mv($tmpFile, \Yii::$app->params['imgDir'] . $path . $file)) {
+        $path .= strtolower(substr($file, 0, 1)) . '/';
+        $path .= strtolower(substr($file, 1, 1)) . '/';
+        
+        if (!$this->mv($tmpfile, \Yii::$app->params['imgDir'] . $path . $file)) {
             $this->addError('', '文件拷贝错误');
             return false;
         }
