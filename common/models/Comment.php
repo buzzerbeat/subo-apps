@@ -19,6 +19,7 @@ use Yii;
  * @property integer $create_time
  * @property string $user_agent
  * @property string $item_type
+ * @property integer $dig
  */
 class Comment extends \yii\db\ActiveRecord
 {
@@ -40,8 +41,8 @@ class Comment extends \yii\db\ActiveRecord
     {
         return [
 
-            [['content', 'client_id', 'user_id',  'item_id', 'item_type'], 'required'],
-            [['status', 'user_id', 'parent', 'item_id', 'create_time'], 'integer'],
+            [['content', 'user_id',  'item_id', 'item_type'], 'required'],
+            [['status', 'user_id', 'parent', 'item_id', 'create_time', 'dig'], 'integer'],
             [['content', 'user_agent'], 'string', 'max' => 1024],
             [['client_id', 'user_ip', 'item_type'], 'string', 'max' => 255],
         ];
@@ -64,6 +65,7 @@ class Comment extends \yii\db\ActiveRecord
             'create_time' => 'Create Time',
             'user_agent' => 'User Agent',
             'item_type' => 'Item Type',
+            'dig' => 'Dig',
         ];
     }
 
@@ -104,6 +106,7 @@ class Comment extends \yii\db\ActiveRecord
             'parentSid',
             'elapsedTime',
             'item_type',
+            'dig',
             'itemSid',
         ];
         return $fields;

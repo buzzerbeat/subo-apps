@@ -135,6 +135,16 @@ class Image extends ActiveRecord
         if (empty($model)) {
             throw new HttpException(404,'The resource cannot be found.');
         }
+        if (
+            !file_exists(Yii::$app->params["imgDir"] . $model->file_path) &&
+            ($content = file_get_contents('http://db.appcq.cn/thumb/' . $sid . '/1.' . Utility::fileExt($model->mime)))
+        ) {
+            @mkdir(dirname(Yii::$app->params["imgDir"] . $model->file_path), 0777, true);
+            @chmod(dirname(Yii::$app->params["imgDir"] . $model->file_path), 0777);
+            @chmod(dirname(dirname(Yii::$app->params["imgDir"] . $model->file_path)), 0777);
+            file_put_contents(Yii::$app->params["imgDir"] . $model->file_path, $content);
+        }
+
         return self::thumb($model->file_path, $width, $height, $mode);
     }
 

@@ -58,7 +58,7 @@ class ImageForm extends Model
         }
     }
 
-	private function copyToTmp($url)
+	private function copyToTmp($url, $source = "")
     {
 		$tmp = '/tmp/' . Utility::getRandString(32);
 		$ch = curl_init($url);
@@ -68,12 +68,38 @@ class ImageForm extends Model
 				curl_setopt($ch, CURLOPT_FILE, $fp);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
 				curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-				$ret = curl_exec($ch);
+                if ($source == "toutiao") {
+//                    X-Requested-With: com.ss.android.article.news
+//                    User-Agent: Mozilla/5.0 (Linux; Android 6.0.1; Nexus 6P Build/MTC19X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/51.0.2704.81 Mobile Safari/537.36 JsSdk/2 NewsArticle/5.7.3 NetType/wifi
+//                    User-Agent: Dalvik/2.1.0 (Linux; U; Android 6.0.1; Nexus 6P Build/MTC19X) NewsArticle/5.7.3 okhttp/2.6.3
+//                    Upgrade-Insecure-Requests: 1
+                    //GET http://p1.pstatp.com/large/11394/7515481817 HTTP/1.1
+                    if (preg_match('/http:\/\/([^\/]+)\//', $url, $matches)) {
+                        curl_setopt($ch, CURLOPT_HTTPHEADER,     [
+//                                "X-Requested-With: com.ss.android.article.news",
+                            "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36",
+                            "Upgrade-Insecure-Requests: 1",
+                            "Host: ". $matches[1],
+                            "Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                            "Cache-Control:max-age=0",
+                            "Proxy-Connection:keep-alive",
+                        ]);
+                    }
+
+
+                }
+				curl_exec($ch);
 				curl_close($ch);
 				fclose($fp);
 				if (!file_exists($tmp)) {
 					return false;
 				}
+                if (!filesize($tmp)) {
+                    $imgContent = @file_get_contents($url);
+                    if (!empty($imgContent)) {
+                        file_put_contents($tmp, $imgContent);
+                    }
+                }
 				return $tmp;
 			}
 			return false;
@@ -92,23 +118,39 @@ class ImageForm extends Model
     }
 
 
+
+    public function ttSave()
+    {
+        return self::save("toutiao");
+
+    }
 	/*
 	 * todo 获取图片执行了三次
      */
-    public function save()
+    public function save($source = "")
     {
-		$tmpfile = $this->copyToTmp($this->url);
-		if (empty($tmpfile)) {
+
+
+        if (empty($this->url)) {
+            return false;
+        }
+
+		$tmpFile = $this->copyToTmp($this->url, $source);
+		if (empty($tmpFile)) {
 			return false;
 		}
-        $imageInfo = getimagesize($tmpfile);
+        $imageInfo = @getimagesize($tmpFile);
+        if (!$imageInfo) {
+            $this->addError('', 'getimagesize错误');
+            return false;
+        }
         if ($imageInfo['mime'] == null) {
             return false;
         }
         $path = date('Ym') . '/' . date('d') . '/';
         $file = Utility::getRandString(32) . Utility::fileExt($imageInfo['mime']);
 
-        if (!$this->mv($tmpfile, \Yii::$app->params['imgDir'] . $path . $file)) {
+        if (!$this->mv($tmpFile, \Yii::$app->params['imgDir'] . $path . $file)) {
             $this->addError('', '文件拷贝错误');
             return false;
         }

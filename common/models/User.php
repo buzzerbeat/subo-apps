@@ -48,6 +48,7 @@ class User extends ActiveRecord implements IdentityInterface
     const DEVICE_TYPE = 1;
     const MOBILE_TYPE = 2;
     const THIRD_TYPE = 3;
+    const ROBOT_TYPE = 101;
 
 
     const TYPE_MAP = [
@@ -76,7 +77,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['created_at', 'updated_at', 'sex', 'personal_sign'], 'safe'],
             [['username', 'email', 'password_hash', 'password_reset_token', 'device_uuid', 'client_id'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
-            [['status', 'type'], 'integer'],
+            [['status', 'type', 'avatar'], 'integer'],
         ];
     }
 
@@ -510,6 +511,42 @@ class User extends ActiveRecord implements IdentityInterface
             'editable'=>$this->isNameEditable(),
             'editable_time'=>strtotime($this->updated_at) + 86400 * 90,
         ];
+    }
+
+    public static function genRobotUser($userName, $userAvatar, $clientId) {
+        $robotUser = User::findOne([
+            'username'=>$userName,
+            'client_id'=>$clientId,
+            "type"=>self::ROBOT_TYPE,
+        ]);
+       if (!empty($robotUser)) {
+            return $robotUser->id;
+       }
+        $robotUser = new User();
+        $robotUser->genRandomPassword();
+        $robotUser->generateAuthKey();
+        $robotUser->generatePasswordResetToken();
+        $robotUser->username = $userName;
+        $robotUser->type = self::ROBOT_TYPE;
+        $robotUser->status = self::STATUS_ACTIVE;
+        $robotUser->created_at = time();
+        $robotUser->updated_at = time();
+        $avatarForm = new ImageForm();
+        if (!empty($userAvatar)) {
+            $avatarForm->url = $userAvatar;
+            $avatarModel = $avatarForm->save();
+
+            if (!empty($avatarModel)) {
+                $robotUser->avatar = $avatarModel->id;
+            }
+        }
+
+        if (!$robotUser->save()) {
+            var_dump($robotUser->getErrors());
+            exit;
+        }
+
+        return $robotUser->id;
     }
 
 

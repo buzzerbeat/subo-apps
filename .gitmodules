@@ -19,3 +19,6 @@
 [submodule "beauty_advanced"]
 	path = beauty_advanced
 	url = https://github.com/buzzerbeat/beauty_advanced.git
+[submodule "article"]
+	path = article
+	url = https://github.com/buzzerbeat/article.git

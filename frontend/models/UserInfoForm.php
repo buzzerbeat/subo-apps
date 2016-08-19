@@ -22,6 +22,7 @@ class UserInfoForm extends Model
     public $avatar;
     public $avatarFile;
     public $personal_sign;
+    public $user;
 //    public $updated_at;
 
     /**
@@ -97,6 +98,7 @@ class UserInfoForm extends Model
                 $this->addError($user->getErrors());
                 return false;
             }
+            $this->user = $user;
             return true;
         }
         return false;

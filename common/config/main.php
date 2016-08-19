@@ -41,6 +41,22 @@ return [
             'password' => 'my,YZWX;87',
             'charset' => 'utf8',
         ],
+        'tdDb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=taskdist',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
+
+        'atDb' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=article',
+            'username' => 'root',
+            'password' => 'my,YZWX;87',
+            'charset' => 'utf8',
+        ],
+        'redis' => 'common\components\RedisHelper',
         'cache' => [
             'class' => 'yii\caching\MemCache',
             'servers' => [

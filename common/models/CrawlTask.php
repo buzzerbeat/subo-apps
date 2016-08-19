@@ -14,8 +14,6 @@ use Yii;
  * @property integer $end_time
  * @property integer $success_num
  * @property integer $fail_num
- * @property integer $filter_num
- * @property integer $duplicate_num
  * @property string $error_json
  */
 class CrawlTask extends \yii\db\ActiveRecord
@@ -44,9 +42,14 @@ class CrawlTask extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['status', 'start_time', 'end_time', 'success_num', 'fail_num', 'filter_num', 'duplicate_num'], 'integer'],
+            [['status', 'start_time', 'end_time', 'success_num', 'fail_num'], 'integer'],
             [['error_json', 'command'], 'string'],
         ];
+    }
+
+    public function getComments() {
+        return $this->hasMany(Comment::className(),
+            ['item_id' => 'id'])->andFilterWhere(['item_type' => 'article/article']);
     }
 
     /**
@@ -62,9 +65,29 @@ class CrawlTask extends \yii\db\ActiveRecord
             'end_time' => 'End Time',
             'success_num' => 'Success Num',
             'fail_num' => 'Fail Num',
-            'filter_num' => 'Filter Num',
-            'duplicate_num' => 'Duplicate Num',
             'error_json' => 'Error Json',
         ];
+    }
+
+
+
+    public function getSuccessEntityNum() {
+        return CrawlThread::find()->where(['task_id'=>$this->id])->sum('success_num');
+    }
+
+    public function getFailEntityNum() {
+        return CrawlThread::find()->where(['task_id'=>$this->id])->sum('fail_num');
+    }
+
+    public function getDuplicateEntityNum() {
+        return CrawlThread::find()->where(['task_id'=>$this->id])->sum('duplicate_num');
+    }
+
+    public function getFilterEntityNum() {
+        return CrawlThread::find()->where(['task_id'=>$this->id])->sum('filter_num');
+    }
+
+    public function getTotalEntityNum() {
+        return CrawlThread::find()->where(['task_id'=>$this->id])->sum('total_num');
     }
 }

@@ -15,6 +15,11 @@ use Yii;
  * @property string $key
  * @property integer $time
  * @property integer $duration
+ * @property integer $total_num
+ * @property integer $success_num
+ * @property integer $fail_num
+ * @property integer $duplicate_num
+ * @property integer $filter_num
  * @property integer $entity_id
  * @property string $error_json
  */
@@ -40,7 +45,7 @@ class CrawlThread extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['task_id', 'status', 'time', 'duration'], 'integer'],
+            [['task_id', 'status', 'time', 'duration', 'total_num', 'success_num', 'fail_num', 'duplicate_num', 'filter_num'], 'integer'],
             [['error_json', 'url', 'entity_id'], 'string'],
             [['site',  'key'], 'string', 'max' => 255],
         ];
@@ -60,6 +65,11 @@ class CrawlThread extends \yii\db\ActiveRecord
             'key' => 'Key',
             'time' => 'Time',
             'duration' => 'Duration',
+            'total_num' => 'Total Num',
+            'success_num' => 'Success Num',
+            'fail_num' => 'Fail Num',
+            'duplicate_num' => 'Duplicate Num',
+            'filter_num' => 'Filter Num',
             'entity_id' => 'Entity ID',
             'error_json' => 'Error Json',
         ];

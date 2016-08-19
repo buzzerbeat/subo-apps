@@ -139,7 +139,7 @@ class UserController extends Controller
         $model = new UserInfoForm();
         $model->load(Yii::$app->request->post(), '');
         if ($model->edit()) {
-            return ["status"=>0, "message"=>""];
+            return ["status"=>0, "message"=>"", "user"=>$model->user];
         }
         return ["status"=>1, "message"=>implode("\n", $model->getFirstErrors())];
     }
