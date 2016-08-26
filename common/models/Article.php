@@ -78,9 +78,16 @@ class Article extends \yii\db\ActiveRecord
 //    }
 
     public function getImages() {
-        return $this->hasMany(TtArticleImage::className(), [
-            'tt_article_id' => 'id'
-        ])->andFilterWhere([ 'is_thumb' => 0]);
+        if ($this->type == 1) {
+            return $this->hasMany(TtArticleImage::className(), [
+                    'tt_article_id' => 'id'
+            ]);
+        } else {
+            return $this->hasMany(TtArticleImage::className(), [
+                    'tt_article_id' => 'id'
+            ])->andFilterWhere([ 'is_thumb' => 0]);
+        }
+
     }
 
     public function getMedia() {
