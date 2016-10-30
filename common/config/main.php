@@ -11,6 +11,11 @@ return [
             'username' => 'root',
             'password' => 'my,YZWX;87',
             'charset' => 'utf8',
+            'enableSchemaCache' => true,
+            // Duration of schema cache.
+            'schemaCacheDuration' => 3600,
+            // Name of the cache component used to store schema information
+            'schemaCache' => 'cache',
         ],
         'qsykDb' => [
             'class' => 'yii\db\Connection',
@@ -26,6 +31,11 @@ return [
             'username' => 'root',
             'password' => 'my,YZWX;87',
             'charset' => 'utf8',
+            'enableSchemaCache' => true,
+            // Duration of schema cache.
+            'schemaCacheDuration' => 3600,
+            // Name of the cache component used to store schema information
+            'schemaCache' => 'cache',
         ],
         'wpDb' => [
             'class' => 'yii\db\Connection',
@@ -33,6 +43,11 @@ return [
             'username' => 'root',
             'password' => 'my,YZWX;87',
             'charset' => 'utf8',
+            'enableSchemaCache' => true,
+            // Duration of schema cache.
+            'schemaCacheDuration' => 3600,
+            // Name of the cache component used to store schema information
+            'schemaCache' => 'cache',
         ],
         'bDb' => [
             'class' => 'yii\db\Connection',
@@ -58,14 +73,7 @@ return [
         ],
         'redis' => 'common\components\RedisHelper',
         'cache' => [
-            'class' => 'yii\caching\MemCache',
-            'servers' => [
-                [
-                    'host' => '127.0.0.1',
-                    'port' => 11211,
-                    'weight' => 100,
-                ],
-            ],
+            'class' => 'yii\caching\FileCache',
         ],
 
     ],
